@@ -81,16 +81,15 @@ namespace Client
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
             // 
             // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(712, 427);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
+	    this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+	    this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // Hoặc PictureBoxSizeMode.Zoom
+	    this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+	    this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+	    this.pictureBox1.Name = "pictureBox1";
+	    this.pictureBox1.TabIndex = 3;
+	    this.pictureBox1.TabStop = false;
+	    this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+	    // 
             // panel1
             // 
             this.panel1.Controls.Add(this.panel2);
@@ -328,13 +327,14 @@ namespace Client
             this.Height = 440;
         }
 
-        // button Xem full màn hình 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-            textBox1.Visible = false;
-        }
+        // Khi phóng to màn hình
+ 	private void button3_Click(object sender, EventArgs e)
+ 	{
+     	this.FormBorderStyle = FormBorderStyle.None;
+     	this.WindowState = FormWindowState.Maximized;
+     	this.Size = new Size(1920, 1080); // Đặt kích thước Full HD
+     	textBox1.Visible = true;
+ 	}
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
