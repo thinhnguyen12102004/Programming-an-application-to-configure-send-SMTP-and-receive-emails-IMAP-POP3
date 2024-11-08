@@ -81,12 +81,11 @@ namespace Client
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
             // 
             // pictureBox1
-            // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // Hoặc PictureBoxSizeMode.Zoom
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(712, 427);
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -275,20 +274,28 @@ namespace Client
 			start();
 		}
 
-	private void timer1_Tick_1(object sender, System.EventArgs e)
-	{
-		try
-		{
+	private void timer1_Tick_1(object sender, EventArgs e)
+{
+    try
+    {
+        URI = "Tcp://" + textBox1.Text + ":6600/MyCaptureScreenServer";
+        byte[] buffer = obj.GetDesktopBitmapBytes();
 
-            //  Nhận ảnh chụp màn hình từ phía server
-			URI = "Tcp://"+textBox1.Text+":6600/MyCaptureScreenServer";
-			byte[] buffer = obj.GetDesktopBitmapBytes();
-			MemoryStream ms = new MemoryStream(buffer);
-			pictureBox1.Image = Image.FromStream(ms);
-		}
-		catch (Exception){stop();};
+        using (MemoryStream ms = new MemoryStream(buffer))
+        {
+            Image img = Image.FromStream(ms);
+            pictureBox1.Image = img;
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom; // Giữ tỉ lệ và đảm bảo hiển thị toàn màn hình
+        }
 
-	}
+        // Đảm bảo PictureBox chiếm toàn bộ Form
+        pictureBox1.Dock = DockStyle.Fill;
+    }
+    catch (Exception)
+    {
+        stop();
+    }
+}
 
 
 
@@ -328,13 +335,14 @@ namespace Client
             this.Height = 440;
         }
 
-        // button Xem full màn hình 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-            textBox1.Visible = false;
-        }
+        // Khi phóng to màn hình
+private void button3_Click(object sender, EventArgs e)
+{
+    this.FormBorderStyle = FormBorderStyle.None;
+    this.WindowState = FormWindowState.Maximized;
+    this.Size = new Size(1920, 1080); // Đặt kích thước Full HD
+    textBox1.Visible = true;
+}
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
